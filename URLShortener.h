@@ -26,7 +26,21 @@ public:
             return "http://tiny.url/" + shortURL;
         }
     }
-    
+    string expandURL(string &shortURL)
+    {
+        string s = "http://tiny.url/";
+        int f = s.length();
+        shortURL = shortURL.substr(f);
+        int id = decodeBase62(shortURL); // Here id is alias to counter value
+        if (idToURL.find(id) != idToURL.end())
+        {
+            return idToURL[id]; // return URL coressponding to the id/counter value
+        }
+        else
+        {
+            return "Short URL not found.";
+        }
+    }
 
 private:
     long long int counter;
@@ -51,5 +65,13 @@ private:
         return shortURL;
     }
 
-    
+    int decodeBase62(const string &shortURL)
+    {
+        int num = 0;
+        for (char c : shortURL)
+        {
+            num = num * 62 + base62.find(c);
+        }
+        return num;
+    }
 };
